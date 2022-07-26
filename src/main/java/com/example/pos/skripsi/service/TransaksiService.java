@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.pos.skripsi.entity.KeranjangProdukEntity;
 import com.example.pos.skripsi.entity.KeranjangTokoEntity;
+import com.example.pos.skripsi.repository.KeranjangProdukRepository;
 import com.example.pos.skripsi.repository.KeranjangTokoRepository;
 import com.example.pos.skripsi.repository.UserRepository;
 
@@ -23,6 +25,9 @@ public class TransaksiService {
 	
 	@Autowired
 	KeranjangTokoRepository keranjangTokoRepository;
+	
+	@Autowired
+	KeranjangProdukRepository keranjangProdukRepository;
 	
 	@Transactional
 	public Map<String, Object> getAllKeranjangToko(){
@@ -56,7 +61,7 @@ public class TransaksiService {
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		} else {
 			response.put("statusCode", HttpStatus.FOUND);
-			response.put("message", "success");
+			response.put("message", "sorry, could not duplicate data");
 			response.put("data", getData);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.FOUND);
 		}
@@ -77,6 +82,26 @@ public class TransaksiService {
 			keranjangTokoRepository.deleteById(id_keranjang_toko);
 			response.put("statusCode", HttpStatus.OK);
 			response.put("message", "data is successfully deleted");
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		}
+	}
+	
+	@Transactional
+	public ResponseEntity<Map<String, Object>> getListProdukKeranjang(
+		String id_keranjang_toko
+	){
+		List<KeranjangProdukEntity> data = keranjangProdukRepository.getListProdukKeranjang(id_keranjang_toko);
+		Map<String, Object> response = new HashMap<>();
+		
+		if(data == null) {
+			response.put("statusCode", HttpStatus.NOT_FOUND);
+			response.put("message", "success");
+			
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+		} else {
+			response.put("statusCode", HttpStatus.OK);
+			response.put("message", "success");
+			response.put("data", data);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}
 	}

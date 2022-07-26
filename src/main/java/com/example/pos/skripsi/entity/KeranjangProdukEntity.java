@@ -33,6 +33,29 @@ public class KeranjangProdukEntity {
 	
 	@Column(name = "created_at")
 	private String created_at;
+	
+	@Column(name = "path")
+	private String path;
+	
+	@Column(name = "id_keranjang_toko")
+	private String id_keranjang_toko;
+
+
+	public String getId_keranjang_toko() {
+		return id_keranjang_toko;
+	}
+
+	public void setId_keranjang_toko(String id_keranjang_toko) {
+		this.id_keranjang_toko = id_keranjang_toko;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
 
 	public String getId_keranjang_produk() {
 		return id_keranjang_produk;
