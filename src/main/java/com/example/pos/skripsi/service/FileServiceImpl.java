@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Service
 public class FileServiceImpl implements FileService {
 
-    private final Path root = Paths.get("http://localhost:6969/growell/produk/Download");
+    private final Path root = Paths.get("http://10.0.2.2:6969/growell/produk/Download");
     @Override
     public void init() {
         try {

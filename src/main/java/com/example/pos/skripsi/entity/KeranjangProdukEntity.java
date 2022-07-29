@@ -39,7 +39,40 @@ public class KeranjangProdukEntity {
 	
 	@Column(name = "id_keranjang_toko")
 	private String id_keranjang_toko;
+	
+	@Column(name = "jumlah_belanjaan")
+	private int jumlah_belanjaan;
+	
+	@Column(name = "total_amount")
+	private String total_amount;
+	
+	@Column(name = "edited_at")
+	private String edited_at;
 
+
+	public String getEdited_at() {
+		return edited_at;
+	}
+
+	public void setEdited_at(String edited_at) {
+		this.edited_at = edited_at;
+	}
+
+	public int getJumlah_belanjaan() {
+		return jumlah_belanjaan;
+	}
+
+	public void setJumlah_belanjaan(int jumlah_belanjaan) {
+		this.jumlah_belanjaan = jumlah_belanjaan;
+	}
+
+	public String getTotal_amount() {
+		return total_amount;
+	}
+
+	public void setTotal_amount(String total_amount) {
+		this.total_amount = total_amount;
+	}
 
 	public String getId_keranjang_toko() {
 		return id_keranjang_toko;

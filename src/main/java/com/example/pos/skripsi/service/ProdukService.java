@@ -119,7 +119,7 @@ public class ProdukService {
 		
 		ProdukEntity savedData = produkRepository.save(produkEntity);
 		
-		String uploadDir = "src/main/resources/static/user-photos/" + savedData.getId_user();
+		String uploadDir = "user-photos/" + savedData.getId_user();
 		 
         FileUploadUtil.saveFile(url, fileName, path);
 		
