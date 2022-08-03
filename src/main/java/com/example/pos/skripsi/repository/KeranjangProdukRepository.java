@@ -14,9 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 @Repository
 public interface KeranjangProdukRepository extends JpaRepository<KeranjangProdukEntity, String>{
 	
-	@Query("SELECT p FROM KeranjangProdukEntity p WHERE p.id_user=:id_user")
+	@Query("SELECT p FROM KeranjangProdukEntity p WHERE p.id_keranjang_toko=:id_keranjang_toko")
 	public List<KeranjangProdukEntity> getListProdukKeranjang(
-		@RequestParam(name = "id_user") String id_user
+		@RequestParam(name = "id_keranjang_toko") String id_keranjang_toko
 	);
 	
 	@Query("SELECT p FROM KeranjangProdukEntity p WHERE p.id_produk=:id_produk")

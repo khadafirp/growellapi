@@ -14,6 +14,6 @@ import com.example.pos.skripsi.entity.KeranjangTokoEntity;
 
 @Repository
 public interface KeranjangTokoRepository extends JpaRepository<KeranjangTokoEntity, String>{
-	@Query("SELECT p FROM KeranjangTokoEntity p WHERE p.id_user=:id_user")
-	public KeranjangTokoEntity getKeranjangToko(@RequestParam(name = "id_user") String id_user);
+	@Query("SELECT p FROM KeranjangTokoEntity p WHERE p.id_keranjang_toko=:id_keranjang_toko")
+	public KeranjangTokoEntity getKeranjangToko(@RequestParam(name = "id_user") String id_keranjang_toko);
 }

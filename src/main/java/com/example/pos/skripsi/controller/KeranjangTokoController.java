@@ -32,10 +32,9 @@ public class KeranjangTokoController {
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> addKeranjangToko(
 		@RequestParam(name = "id_keranjang_toko") String id_keranjang_toko,
-		@RequestParam(name = "id_user") String id_user,
-		@RequestParam(name = "created_at") String created_at
+		@RequestParam(name = "id_user") String id_user
 	){
-		ResponseEntity<Map<String, Object>> response = transaksiService.addKeranjangToko(id_keranjang_toko, id_user, created_at);
+		ResponseEntity<Map<String, Object>> response = transaksiService.addKeranjangToko(id_keranjang_toko, id_user);
 		return response;
 	}
 	
