@@ -23,9 +23,10 @@ public class KeranjangProdukController {
 	@GetMapping("/list-produk")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> getListProdukKeranjang(
+		@RequestParam(name = "id_user") String id_user,
 		@RequestParam(name = "id_keranjang_toko") String id_keranjang_toko
 	){
-		ResponseEntity<Map<String, Object>> response = transaksiService.getListProdukKeranjang(id_keranjang_toko);
+		ResponseEntity<Map<String, Object>> response = transaksiService.getListProdukKeranjang(id_user, id_keranjang_toko);
 		return response;
 	}
 	

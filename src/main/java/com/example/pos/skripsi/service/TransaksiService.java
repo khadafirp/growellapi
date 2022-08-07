@@ -18,9 +18,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.pos.skripsi.entity.KeranjangProdukEntity;
 import com.example.pos.skripsi.entity.KeranjangTokoEntity;
+import com.example.pos.skripsi.entity.RiwayatTransaksiDetailEntity;
+import com.example.pos.skripsi.entity.RiwayatTransaksiEntity;
 import com.example.pos.skripsi.entity.UserEntity;
 import com.example.pos.skripsi.repository.KeranjangProdukRepository;
 import com.example.pos.skripsi.repository.KeranjangTokoRepository;
+import com.example.pos.skripsi.repository.RiwayatTransaksiDetailRepository;
+import com.example.pos.skripsi.repository.RiwayatTransaksiRepository;
 import com.example.pos.skripsi.repository.UserRepository;
 
 @Service
@@ -34,6 +38,12 @@ public class TransaksiService {
 	
 	@Autowired
 	KeranjangProdukRepository keranjangProdukRepository;
+	
+	@Autowired
+	RiwayatTransaksiRepository riwayatTransaksiRepository;
+	
+	@Autowired
+	RiwayatTransaksiDetailRepository riwayatTransaksiDetailRepository;
 	
 	@Transactional
 	public Map<String, Object> getAllKeranjangToko(){
@@ -102,7 +112,7 @@ public class TransaksiService {
 			response.put("data", null);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 		} else {
-			keranjangTokoRepository.deleteById(id_keranjang_toko);
+			keranjangTokoRepository.deleteById(getData.getId_keranjang_toko());
 			response.put("statusCode", HttpStatus.OK);
 			response.put("message", "data is successfully deleted");
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
@@ -111,9 +121,16 @@ public class TransaksiService {
 	
 	@Transactional
 	public ResponseEntity<Map<String, Object>> getListProdukKeranjang(
+		String id_user,
 		String id_keranjang_toko
 	){
-		List<KeranjangProdukEntity> data = keranjangProdukRepository.getListProdukKeranjang(id_keranjang_toko);
+		List<KeranjangProdukEntity> data = new ArrayList<>();
+		if(id_user.equals(id_keranjang_toko)) {
+			data = keranjangProdukRepository.getListProdukKeranjangPenjual(id_user, id_keranjang_toko);
+		} else {
+			data = keranjangProdukRepository.getListProdukKeranjangPembeli(id_keranjang_toko);
+		}
+		
 		Map<String, Object> response = new HashMap<>();
 		
 		if(data == null) {
@@ -209,11 +226,113 @@ public class TransaksiService {
 			response.put("data", null);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 		} else {
-			keranjangProdukRepository.deleteById(id_produk);
+			KeranjangProdukEntity data = keranjangProdukRepository.getProduk(id_produk);
+			if(data != null) {
+				keranjangProdukRepository.deleteById(data.getId_keranjang_produk());
+			}
 			response.put("statusCode", HttpStatus.OK);
 			response.put("message", "data is successfully deleted");
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}
+	}
+	
+	@Transactional
+	public ResponseEntity<Map<String, Object>> addToRiwayatTransaksi(
+		String id_riwayat_transaksi,
+		String total_amount,
+		int status_transaksi,
+		String id_user,
+		String id_toko
+	){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		
+		RiwayatTransaksiEntity riwayatTransaksiEntity = new RiwayatTransaksiEntity();
+		riwayatTransaksiEntity.setId_riwayat_transaksi(id_riwayat_transaksi);
+		riwayatTransaksiEntity.setTotal_amount(total_amount);
+		riwayatTransaksiEntity.setStatus_transaksi(status_transaksi);
+		riwayatTransaksiEntity.setId_toko(id_toko);
+		riwayatTransaksiEntity.setId_user(id_user);
+		riwayatTransaksiEntity.setCreated_at(dateFormat.format(date));
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("statusCode", 200);
+		response.put("message", "success");
+		response.put("data", riwayatTransaksiRepository.save(riwayatTransaksiEntity));
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+	
+	@Transactional
+	public ResponseEntity<Map<String, Object>> addToRiwayatTransaksiDetail(
+		String id_riwayat_transaksi_detail,
+		String nama_produk,
+		String desc_produk,
+		String harga_produk,
+		String id_produk,
+		String id_riwayat_transaksi,
+		String id_user,
+		int status_transaksi,
+		String id_toko,
+		String created_at,
+		String edited_at
+	){
+		RiwayatTransaksiDetailEntity riwayatTransaksiDetailEntity = new RiwayatTransaksiDetailEntity();
+		riwayatTransaksiDetailEntity.setId_riwayat_transaksi_detail(id_riwayat_transaksi_detail);
+		riwayatTransaksiDetailEntity.setNama_produk(nama_produk);
+		riwayatTransaksiDetailEntity.setDesc_produk(desc_produk);
+		riwayatTransaksiDetailEntity.setHarga_produk(harga_produk);
+		riwayatTransaksiDetailEntity.setId_produk(id_produk);
+		riwayatTransaksiDetailEntity.setId_riwayat_transaksi(id_riwayat_transaksi);
+		riwayatTransaksiDetailEntity.setId_user(id_user);
+		riwayatTransaksiDetailEntity.setStatus_transaksi(status_transaksi);
+		riwayatTransaksiDetailEntity.setId_toko(id_toko);
+		riwayatTransaksiDetailEntity.setCreated_at(created_at);
+		riwayatTransaksiDetailEntity.setEdited_at(edited_at);
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("statusCode", 200);
+		response.put("message", "success");
+		response.put("data", riwayatTransaksiDetailRepository.save(riwayatTransaksiDetailEntity));
+		
+		deleteKeranjangToko(id_toko);
+		deleteKeranjangProduk(id_produk);
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+	
+	@Transactional
+	public ResponseEntity<Map<String, Object>> getListRiwayatTransaksi(String id_toko){
+		List<RiwayatTransaksiEntity> listRiwayatTransaksiToko = riwayatTransaksiRepository.getListRiwayatTransaksi(id_toko);
+		List<UserEntity> listDataUser = new ArrayList<>();
+		
+		if(listRiwayatTransaksiToko != null) {
+			for(int i = 0; i < listRiwayatTransaksiToko.size(); i++) {
+				UserEntity data = userRepository.findUserById(listRiwayatTransaksiToko.get(i).getId_toko());
+				if(data.getUser_kategori() == 1) {
+					listDataUser.add(data);
+				}
+			}
+		}
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("statusCode", 200);
+		response.put("message", "success");
+		response.put("data", listDataUser);
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+	
+	@Transactional
+	public ResponseEntity<Map<String, Object>> getDetailTransaksi(String id_riwayat_transaksi){
+		List<RiwayatTransaksiDetailEntity> getData = riwayatTransaksiDetailRepository.getListDetailRiwayatTransaksi(id_riwayat_transaksi);
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("statusCode", 200);
+		response.put("message", "success");
+		response.put("data", getData);
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	}
 
 }

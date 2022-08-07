@@ -17,5 +17,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String>{
 	
 	@Query("SELECT s FROM UserEntity s WHERE s.id_user=:id_keranjang_toko")
 	public UserEntity findUserById(@RequestParam(name = "id_user") String id_keranjang_toko);
+	
+	@Query("SELECT s FROM UserEntity s WHERE s.id_user=:id_user")
+	public UserEntity findUserByIdUser(@RequestParam(name = "id_user") String id_user);
 
 }
