@@ -45,9 +45,10 @@ public class RiwayatTransaksiController {
 		@RequestParam(name = "status_transaksi") int status_transaksi,
 		@RequestParam(name = "id_toko") String id_toko,
 		@RequestParam(name = "created_at") String created_at,
-		@RequestParam(name = "updated_at") String updated_at
+		@RequestParam(name = "updated_at") String updated_at,
+		@RequestParam(name = "jumlah_belanja") String jumlah_belanja
 	){
-		ResponseEntity<Map<String, Object>> response = transaksiService.addToRiwayatTransaksiDetail(id_riwayat_transaksi_detail, nama_produk, desc_produk, harga_produk, id_produk, id_riwayat_transaksi, id_user, status_transaksi, id_toko, created_at, updated_at);
+		ResponseEntity<Map<String, Object>> response = transaksiService.addToRiwayatTransaksiDetail(id_riwayat_transaksi_detail, nama_produk, desc_produk, harga_produk, id_produk, id_riwayat_transaksi, id_user, status_transaksi, id_toko, created_at, updated_at, jumlah_belanja);
 		return response;
 	}
 }

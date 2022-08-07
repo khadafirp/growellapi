@@ -42,6 +42,17 @@ public class RiwayatTransaksiDetailEntity {
 	
 	@Column(name = "id_toko")
 	private String id_toko;
+	
+	@Column(name = "jumlah_belanja")
+	private String jumlah_belanja;
+
+	public String getJumlah_belanja() {
+		return jumlah_belanja;
+	}
+
+	public void setJumlah_belanja(String jumlah_belanja) {
+		this.jumlah_belanja = jumlah_belanja;
+	}
 
 	public String getId_riwayat_transaksi_detail() {
 		return id_riwayat_transaksi_detail;

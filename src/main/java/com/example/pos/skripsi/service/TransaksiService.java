@@ -275,7 +275,8 @@ public class TransaksiService {
 		int status_transaksi,
 		String id_toko,
 		String created_at,
-		String edited_at
+		String edited_at,
+		String jumlah_belanja
 	){
 		RiwayatTransaksiDetailEntity riwayatTransaksiDetailEntity = new RiwayatTransaksiDetailEntity();
 		riwayatTransaksiDetailEntity.setId_riwayat_transaksi_detail(id_riwayat_transaksi_detail);
@@ -289,6 +290,7 @@ public class TransaksiService {
 		riwayatTransaksiDetailEntity.setId_toko(id_toko);
 		riwayatTransaksiDetailEntity.setCreated_at(created_at);
 		riwayatTransaksiDetailEntity.setEdited_at(edited_at);
+		riwayatTransaksiDetailEntity.setJumlah_belanja(jumlah_belanja);
 		
 		Map<String, Object> response = new HashMap<>();
 		response.put("statusCode", 200);
