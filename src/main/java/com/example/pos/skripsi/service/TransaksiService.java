@@ -304,8 +304,9 @@ public class TransaksiService {
 	}
 	
 	@Transactional
-	public ResponseEntity<Map<String, Object>> getListRiwayatTransaksi(String id_toko){
-		List<RiwayatTransaksiEntity> listRiwayatTransaksiToko = riwayatTransaksiRepository.getListRiwayatTransaksi(id_toko);
+	public ResponseEntity<Map<String, Object>> getListRiwayatTransaksi(String id_user){
+		UserEntity dataUser = userRepository.findUserByIdUser(id_user);
+		List<RiwayatTransaksiEntity> listRiwayatTransaksiToko = riwayatTransaksiRepository.getListRiwayatTransaksi(dataUser.getId_user());
 		List<UserEntity> listDataUser = new ArrayList<>();
 		
 		if(listRiwayatTransaksiToko != null) {
@@ -316,11 +317,14 @@ public class TransaksiService {
 				}
 			}
 		}
+		Map<String, Object> mergeData = new HashMap<>();
+		mergeData.put("toko", listRiwayatTransaksiToko);
+		mergeData.put("pemilik_toko", listDataUser);
 		
 		Map<String, Object> response = new HashMap<>();
 		response.put("statusCode", 200);
 		response.put("message", "success");
-		response.put("data", listDataUser);
+		response.put("data", mergeData);
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	}

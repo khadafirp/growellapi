@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +50,24 @@ public class RiwayatTransaksiController {
 		@RequestParam(name = "jumlah_belanja") String jumlah_belanja
 	){
 		ResponseEntity<Map<String, Object>> response = transaksiService.addToRiwayatTransaksiDetail(id_riwayat_transaksi_detail, nama_produk, desc_produk, harga_produk, id_produk, id_riwayat_transaksi, id_user, status_transaksi, id_toko, created_at, updated_at, jumlah_belanja);
+		return response;
+	}
+	
+	@GetMapping("/list-riwayat-transaksi")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> listRiwayatTransaksi(
+		@RequestParam(name = "id_user") String id_user
+	){
+		ResponseEntity<Map<String, Object>> response = transaksiService.getListRiwayatTransaksi(id_user);
+		return response;
+	}
+	
+	@PostMapping("/detail-riwayat-transaksi")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> getDetailRiwayatTransaksi(
+		@RequestParam(name = "id_riwayat_transaksi") String id_riwayat_transaksi
+	){
+		ResponseEntity<Map<String, Object>> response = transaksiService.getDetailTransaksi(id_riwayat_transaksi);
 		return response;
 	}
 }
